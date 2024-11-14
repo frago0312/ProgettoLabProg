@@ -5,6 +5,19 @@
 #include "UserInterface.h"
 #include "UserManager.h"
 
+/* DOMANDE DA FARE AL PROF
+ * - Scegliere l'elaborato su moodle?
+ *
+ * - Come posso gestire la condivisione di note fra più utenti? Devo inviare agli altri utenti delle notifiche?
+ *   Se sì, come faccio a gestirle avendo un solo utente loggato per volta?
+ *
+ * - In che modo devo implementare il design pattern Observer? Così va bene o manca di funzionalità?
+ *
+ * - Ci sono altre funzionalità da aggiungere al programma? Se sì, quali?
+ *
+ * - Unit testing: quando iniziare a farlo?
+ */
+
 
 int main()
 {
