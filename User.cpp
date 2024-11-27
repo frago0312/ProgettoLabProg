@@ -19,6 +19,20 @@ std::string User::getName() const {
     return name;
 }
 
+void Subject::attach(std::shared_ptr<Observer> observer) {
+    observers.push_back(observer);
+}
+
+void Subject::detach(std::shared_ptr<Observer> observer) {
+    observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
+}
+
+void Subject::notifyObservers() {
+    for (const auto& observer : observers) {
+        observer->update();
+    }
+}
+
 void User::addShoppingList(std::shared_ptr<ShoppingList> list) {
     shoppingLists.push_back(list);
     list->attach(shared_from_this());
