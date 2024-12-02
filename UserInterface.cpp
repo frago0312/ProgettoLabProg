@@ -173,7 +173,32 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
         int choice = integerInput();
         switch (choice) {
             case 1: {
-                list->addItem(std::make_shared<Item>());
+                std::cout << "Insert item name:";
+                std::string name=stringInput();
+                int amount = integerInput("Inserisci la quantita: ");
+                int catChoice=0;
+                ItemCategory category=ItemCategory::None;
+                std::cout << "Select a category:\n";
+                std::cout << "1. Groceries\n";
+                std::cout << "2. Clothing\n";
+                std::cout << "3. Electronics\n";
+                std::cout << "4. Home\n";
+                std::cout << "5. Health\n";
+                std::cout << "6. Pets\n";
+                std::cout << "7. Extras\n";
+                std::cout << "Enter your choice (1-7): ";
+                std::cin >> choice;
+                switch (catChoice) {
+                    case 1: category = ItemCategory::Groceries; break;
+                    case 2: category = ItemCategory::Clothing; break;
+                    case 3: category = ItemCategory::Electronics; break;
+                    case 4: category = ItemCategory::Home; break;
+                    case 5: category = ItemCategory::Health; break;
+                    case 6: category = ItemCategory::Pets; break;
+                    case 7: category = ItemCategory::Extras; break;
+                    default: category = ItemCategory::None;
+                }
+                list->addItem(std::make_shared<Item>(name, amount, category));
                 std::cout << "Elemento aggiunto con successo!\n";
                 break;
             }

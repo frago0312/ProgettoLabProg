@@ -11,9 +11,7 @@
 
 class Item {
 public:
-    Item();
-    void initAmount();
-    void initCategory();
+    Item(std::string n, int a, ItemCategory c);
     int getAmount() const;
     std::string getName() const;
     bool isBought() const;
