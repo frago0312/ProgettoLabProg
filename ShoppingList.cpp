@@ -8,22 +8,19 @@
 #include <algorithm>
 #include <iostream>
 
-ShoppingList::ShoppingList()
-    : itemCount(0) {
+ShoppingList::ShoppingList(){
     std::cout << "Inserisci il nome della lista della spesa: ";
     name = stringInput();
 }
 
 void ShoppingList::addItem(std::shared_ptr<Item> item) {
     items.push_back(item);
-    itemCount += item->getAmount();
     notifyObservers();
 }
 
 void ShoppingList::removeItem(std::shared_ptr<Item> item) {
     auto it = std::find(items.begin(), items.end(), item);
     if (it != items.end()) {
-        itemCount -= item->getAmount();
         items.erase(it);
         notifyObservers();
     }
@@ -44,7 +41,10 @@ void ShoppingList::notifyObservers()  {
 }
 
 int ShoppingList::getItemCount() const {
-    return itemCount;
+    int count = 0;
+    for (auto it: items)
+        count+=it->getAmount();
+    return count;
 }
 
 const std::string& ShoppingList::getName() const {
@@ -62,7 +62,7 @@ void ShoppingList::displayList() const {
         std::cout <<i<<". "<< item->getName() << "\t-\t" << item->getAmount() << " unita'\n";
         ++i;
     }
-    std::cout << "Totale elementi: " << itemCount << "\n";
+    std::cout << "Totale elementi: " << getItemCount() << "\n";
     printSeparator();
 }
 

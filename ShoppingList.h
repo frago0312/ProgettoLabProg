@@ -41,7 +41,6 @@ private:
     std::string name;
     std::vector<std::shared_ptr<Item> > items;
     std::vector<std::shared_ptr<Observer> > observers;
-    int itemCount;
 };
 
 
