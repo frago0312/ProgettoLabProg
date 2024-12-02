@@ -14,7 +14,7 @@ class User : public Observer, public std::enable_shared_from_this<User> {
 public:
     explicit User(const std::string &name);
 
-    ~User();
+    ~User() override;
 
     void update() override;
 
