@@ -24,15 +24,15 @@ void ShoppingList::removeItem(int index) {
         }
 }
 
-void ShoppingList::attach(std::shared_ptr<Observer> observer)  {
+void ShoppingList::attach(Observer* observer)  {
     observers.push_back(observer);
 }
 
-void ShoppingList::detach(std::shared_ptr<Observer> observer)  {
+void ShoppingList::detach(Observer* observer)  {
     observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
 }
 
-void ShoppingList::notifyObservers()  {
+void ShoppingList::notifyObservers() {
     for (const auto& observer : observers) {
         observer->update();
     }
@@ -58,6 +58,6 @@ const std::string& ShoppingList::getName() const {
 }
 
 
-void ShoppingList::shareListWith(std::shared_ptr<Observer> user)  {
+void ShoppingList::shareListWith(Observer* user)  {
     attach(user);
 }

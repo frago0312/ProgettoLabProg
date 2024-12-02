@@ -21,9 +21,9 @@ public:
 
     void removeItem(int index);
 
-    void attach(std::shared_ptr<Observer> observer) override;
+    void attach(Observer* observer) override;
 
-    void detach(std::shared_ptr<Observer> observer) override;
+    void detach(Observer* observer) override;
 
     void notifyObservers() override;
 
@@ -35,12 +35,12 @@ public:
 
     const std::string &getName() const;
 
-    void shareListWith(std::shared_ptr<Observer> user) ;
+    void shareListWith(Observer* user) ;
 
 private:
     std::string name;
     std::vector<std::shared_ptr<Item> > items;
-    std::vector<std::shared_ptr<Observer> > observers;
+    std::vector<Observer*> observers;
 };
 
 

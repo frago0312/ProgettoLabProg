@@ -14,6 +14,8 @@ class User : public Observer, public std::enable_shared_from_this<User> {
 public:
     explicit User(const std::string &name);
 
+    ~User();
+
     void update() override;
 
     std::string getName() const;
@@ -26,7 +28,7 @@ public:
 
 private:
     std::string name;
-    std::vector<std::shared_ptr<ShoppingList> > shoppingLists;
+    std::vector<std::shared_ptr<ShoppingList>> shoppingLists;
 };
 
 

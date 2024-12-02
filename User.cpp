@@ -11,6 +11,13 @@ User::User(const std::string &name)
     : name(name) {
 }
 
+User::~User() {
+    for (auto& list : shoppingLists) {
+        list->detach(this);  // Rimuove l'observer da ogni lista
+    }
+    shoppingLists.clear();  // Svuota il vettore
+}
+
 void User::update()  {
     std::cout << "User " << name << " has been notified of changes in the shopping list." << std::endl;
 }
@@ -19,29 +26,15 @@ std::string User::getName() const {
     return name;
 }
 
-void Subject::attach(std::shared_ptr<Observer> observer) {
-    observers.push_back(observer);
-}
-
-void Subject::detach(std::shared_ptr<Observer> observer) {
-    observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
-}
-
-void Subject::notifyObservers() {
-    for (const auto& observer : observers) {
-        observer->update();
-    }
-}
-
 void User::addShoppingList(std::shared_ptr<ShoppingList> list) {
     shoppingLists.push_back(list);
-    list->attach(shared_from_this());
+    list->attach(this);
 }
 
 void User::removeShoppingList(std::shared_ptr<ShoppingList> list) {
     auto it = std::find(shoppingLists.begin(), shoppingLists.end(), list);
     if (it != shoppingLists.end()) {
-        list->detach(shared_from_this());
+        list->detach(this);
         shoppingLists.erase(it);
     }
 }
