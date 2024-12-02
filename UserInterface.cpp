@@ -129,7 +129,7 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
     while (true) {
         std::cout << "Ecco le tue liste della spesa, scegli quale vuoi aprire:\n";
         for (size_t i = 0; i < lists.size(); ++i) {
-            std::cout << i + 1 << ". " << lists[i]->getName() << ":\t"<<lists[i]->getItemCount()<<" oggetti\n";
+            std::cout << i + 1 << ". " << lists[i]->getName() << ":\t"<<lists[i]->getItemQuantities()<<" oggetti\n";
         }
         std::cout << lists.size() + 1 << ". Torna al menu principale\n";
 
@@ -164,7 +164,12 @@ void UserInterface::createShoppingList(std::shared_ptr<User> user) {
 void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
     bool keepOpen = true;
     while (keepOpen) {
-        list->displayList();
+        int i = 1;
+        std::cout<<"Lista della spesa: "<<list->getName()<<"\n";
+        for (const auto& item : list->getItems()) {
+            std::cout <<i<<". "<< item->getName() << ":\t\t" << item->getAmount() << " unita'\n";
+            ++i;
+        }
         std::cout << "\nScegli un'opzione:\n";
         std::cout << "1. Aggiungi un nuovo elemento\n";
         std::cout << "2. Rimuovi un elemento\n";
@@ -203,15 +208,15 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
                 break;
             }
             case 2: {
-                if (list->getItemCount()<1)
+                if (list->getItemQuantities()<1)
                     std::cout << "Non ci sono elementi da rimuovere\n";
                 else {
                     std::cout << "Inserisci l'indice dell'elemento da rimuovere: \n";
                     const int index = integerInput();
-                    if (index<1 || index>list->getItems().size())
+                    if (index<1 || index>list->getItemCount())
                         std::cout << "Scelta non valida\n";
                     else {
-                        list->removeItem(list->getItems()[index-1]);
+                        list->removeItem(index-1);
                         std::cout << "Elemento rimosso con successo!\n";
                     }
                     break;

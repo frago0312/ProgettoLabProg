@@ -18,12 +18,10 @@ void ShoppingList::addItem(std::shared_ptr<Item> item) {
     notifyObservers();
 }
 
-void ShoppingList::removeItem(std::shared_ptr<Item> item) {
-    auto it = std::find(items.begin(), items.end(), item);
-    if (it != items.end()) {
-        items.erase(it);
-        notifyObservers();
-    }
+void ShoppingList::removeItem(int index) {
+    if (index < items.size()) {
+            items.erase(items.begin() + index);
+        }
 }
 
 void ShoppingList::attach(std::shared_ptr<Observer> observer)  {
@@ -40,31 +38,25 @@ void ShoppingList::notifyObservers()  {
     }
 }
 
-int ShoppingList::getItemCount() const {
+std::vector<std::shared_ptr<Item>> ShoppingList::getItems() const {
+    return items;
+}
+
+int ShoppingList::getItemQuantities() const {
     int count = 0;
     for (auto it: items)
         count+=it->getAmount();
     return count;
 }
 
+int ShoppingList::getItemCount() const {
+    return items.size();
+}
+
 const std::string& ShoppingList::getName() const {
     return name;
 }
 
-std::vector<std::shared_ptr<Item>> ShoppingList::getItems() const {
-    return items;
-}
-
-void ShoppingList::displayList() const {
-    int i = 1;
-    std::cout << "Lista della spesa: " << name << "\n";
-    for (const auto& item : items) {
-        std::cout <<i<<". "<< item->getName() << "\t-\t" << item->getAmount() << " unita'\n";
-        ++i;
-    }
-    std::cout << "Totale elementi: " << getItemCount() << "\n";
-    printSeparator();
-}
 
 void ShoppingList::shareListWith(std::shared_ptr<Observer> user)  {
     attach(user);

@@ -19,7 +19,7 @@ public:
 
     void addItem(std::shared_ptr<Item> item);
 
-    void removeItem(std::shared_ptr<Item> item);
+    void removeItem(int index);
 
     void attach(std::shared_ptr<Observer> observer) override;
 
@@ -27,13 +27,13 @@ public:
 
     void notifyObservers() override;
 
+    std::vector<std::shared_ptr<Item>> getItems() const;
+
+    int getItemQuantities() const;
+
     int getItemCount() const;
 
     const std::string &getName() const;
-
-    std::vector<std::shared_ptr<Item>> getItems() const;
-
-    void displayList() const;
 
     void shareListWith(std::shared_ptr<Observer> user) ;
 
