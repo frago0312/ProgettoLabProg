@@ -25,7 +25,7 @@ public:
 
     void detach(Observer* observer) override;
 
-    void notifyObservers() override;
+    void notifyObservers(const std::string& message) override;
 
     std::vector<std::shared_ptr<Item>> getItems() const;
 
@@ -38,6 +38,8 @@ public:
     const std::string &getName() const;
 
     void shareListWith(Observer* user) ;
+
+    std::vector<Observer *> getObservers() const;
 
 private:
     std::string name;

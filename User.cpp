@@ -18,8 +18,8 @@ User::~User() {
     shoppingLists.clear();  // Svuota il vettore
 }
 
-void User::update()  {
-    std::cout << "User " << name << " has been notified of changes in the shopping list." << std::endl;
+void User::update(const std::string& message)  {
+    std::cout << name << ": " << message << std::endl;
 }
 
 std::string User::getName() const {

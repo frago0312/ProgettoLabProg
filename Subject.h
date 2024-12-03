@@ -14,7 +14,7 @@ class Subject {
 public:
     virtual void attach(Observer* observer)=0;
     virtual void detach(Observer* observer)=0;
-    virtual void notifyObservers()=0;
+    virtual void notifyObservers(const std::string& message)=0;
     virtual ~Subject() = default;
 };
 

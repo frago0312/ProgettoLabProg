@@ -16,7 +16,7 @@ public:
 
     ~User() override;
 
-    void update() override;
+    void update(const std::string& message) override;
 
     std::string getName() const;
 

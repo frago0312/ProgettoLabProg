@@ -2,6 +2,8 @@
 // Created by franc on 25/09/2024.
 //
 #include "UserInterface.h"
+
+#include <algorithm>
 #include <iostream>
 #include <limits>
 
@@ -30,7 +32,8 @@ std::shared_ptr<User> UserInterface::userSelection() const {
 
             int userChoice = -1; // Inizializza con un valore non valido
 
-            while (userChoice < 1 || userChoice > users.size()) { // Continua a chiedere finché non si sceglie un utente valido
+            while (userChoice < 1 || userChoice > users.size()) {
+                // Continua a chiedere finché non si sceglie un utente valido
                 std::cout << "Seleziona un utente esistente:\n";
                 for (size_t i = 0; i < users.size(); ++i) {
                     std::cout << i + 1 << ". " << users[i]->getName() << "\n";
@@ -39,7 +42,8 @@ std::shared_ptr<User> UserInterface::userSelection() const {
 
                 userChoice = integerInput();
 
-                if (userChoice == users.size() + 1) { // Torna al menu principale
+                if (userChoice == users.size() + 1) {
+                    // Torna al menu principale
                     printSeparator();
                     break; // Esce dal ciclo interno e torna al menu principale
                 }
@@ -51,7 +55,6 @@ std::shared_ptr<User> UserInterface::userSelection() const {
                     printSeparator();
                 }
             }
-
         } else if (choice == 2) {
             std::cout << "Inserisci il nome del nuovo utente: ";
             std::string newName = stringInput();
@@ -73,7 +76,6 @@ std::shared_ptr<User> UserInterface::userSelection() const {
 
 
 bool UserInterface::mainMenu(std::shared_ptr<User> user) {
-
     while (true) {
         std::cout << "Benvenuto " << user->getName() << "!\n";
         std::cout << "Seleziona un'opzione:\n";
@@ -118,7 +120,7 @@ bool UserInterface::mainMenu(std::shared_ptr<User> user) {
 
 // Funzione per visualizzare le liste della spesa dell'utente
 void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
-    const auto& lists = user->getShoppingLists();
+    const auto &lists = user->getShoppingLists();
 
     if (lists.empty()) {
         std::cout << "Nessuna lista della spesa trovata.\n";
@@ -129,7 +131,7 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
     while (true) {
         std::cout << "Ecco le tue liste della spesa, scegli quale vuoi aprire:\n";
         for (size_t i = 0; i < lists.size(); ++i) {
-            std::cout << i + 1 << ". " << lists[i]->getName() << ":\t"<<lists[i]->getItemCount()<<" oggetti\n";
+            std::cout << i + 1 << ". " << lists[i]->getName() << ":\t" << lists[i]->getItemCount() << " oggetti\n";
         }
         std::cout << lists.size() + 1 << ". Torna al menu principale\n";
 
@@ -156,7 +158,7 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
 void UserInterface::createShoppingList(std::shared_ptr<User> user) {
     auto newList = std::make_shared<ShoppingList>();
     user->addShoppingList(newList);
-    std::cout << "Lista "<< newList->getName() <<" creata con successo!\n";
+    std::cout << "Lista " << newList->getName() << " creata con successo!\n";
     printSeparator();
 }
 
@@ -165,11 +167,11 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
     bool keepOpen = true;
     while (keepOpen) {
         int i = 1;
-        std::cout<<"Lista della spesa: "<<list->getName()<<"\n";
-        for (const auto& item : list->getItems()) {
+        std::cout << "Lista della spesa: " << list->getName() << "\n";
+        for (const auto &item: list->getItems()) {
             std::string status = item->isBought() ? "[x]" : "[ ]";
             std::cout << i << ". " << status << " " << item->getName()
-                      << ":\t\t" << item->getAmount() << " unita'\n";
+                    << ":\t\t" << item->getAmount() << " unita'\n";
             ++i;
         }
         std::cout << "\nScegli un'opzione:\n";
@@ -182,9 +184,9 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
         switch (choice) {
             case 1: {
                 std::cout << "Inserisci il nome dell'oggetto:";
-                std::string name=stringInput();
+                std::string name = stringInput();
                 int amount = integerInput("Inserisci la quantita': ");
-                ItemCategory category=ItemCategory::None;
+                ItemCategory category = ItemCategory::None;
                 std::cout << "Seleziona una categoria (1-7):\n";
                 std::cout << "1. Groceries\n";
                 std::cout << "2. Clothing\n";
@@ -193,28 +195,36 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
                 std::cout << "5. Health\n";
                 std::cout << "6. Pets\n";
                 std::cout << "7. Extras\n";
-                int catChoice=integerInput();
+                int catChoice = integerInput();
                 switch (catChoice) {
-                    case 1: category = ItemCategory::Groceries; break;
-                    case 2: category = ItemCategory::Clothing; break;
-                    case 3: category = ItemCategory::Electronics; break;
-                    case 4: category = ItemCategory::Home; break;
-                    case 5: category = ItemCategory::Health; break;
-                    case 6: category = ItemCategory::Pets; break;
-                    case 7: category = ItemCategory::Extras; break;
+                    case 1: category = ItemCategory::Groceries;
+                        break;
+                    case 2: category = ItemCategory::Clothing;
+                        break;
+                    case 3: category = ItemCategory::Electronics;
+                        break;
+                    case 4: category = ItemCategory::Home;
+                        break;
+                    case 5: category = ItemCategory::Health;
+                        break;
+                    case 6: category = ItemCategory::Pets;
+                        break;
+                    case 7: category = ItemCategory::Extras;
+                        break;
                     default: category = ItemCategory::None;
                 }
                 list->addItem(std::make_shared<Item>(name, amount, category));
                 std::cout << "Elemento aggiunto con successo!\n";
+                list->notifyObservers("un oggetto e' stato aggiunto alla lista " + list->getName());
                 break;
             }
             case 2: {
-                if (list->getItemQuantities()<1)
+                if (list->getItemQuantities() < 1)
                     std::cout << "Non ci sono elementi da comprare\n";
                 else {
                     std::cout << "Inserisci l'indice dell'elemento da comprare: \n";
                     const int index = integerInput();
-                    if (index<1 || index>list->getItemCount())
+                    if (index < 1 || index > list->getItemCount())
                         std::cout << "Scelta non valida\n";
                     else {
                         auto item = list->getItemAt(index - 1);
@@ -226,24 +236,49 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
                         }
                     }
                 }
+                list->notifyObservers("lo stato di un oggetto e' stato modificato nella lista " + list->getName());
                 break;
             }
             case 3: {
-                if (list->getItemQuantities()<1)
+                if (list->getItemQuantities() < 1)
                     std::cout << "Non ci sono elementi da rimuovere\n";
                 else {
                     std::cout << "Inserisci l'indice dell'elemento da rimuovere: \n";
                     const int index = integerInput();
-                    if (index<1 || index>list->getItemCount())
+                    if (index < 1 || index > list->getItemCount())
                         std::cout << "Scelta non valida\n";
                     else {
-                        list->removeItem(index-1);
+                        list->removeItem(index - 1);
                         std::cout << "Elemento rimosso con successo!\n";
                     }
                 }
+                list->notifyObservers("un oggetto e' stato rimosso dalla lista " + list->getName());
                 break;
             }
             case 4: {
+                std::cout << "Inserisci il nome dell'utente: ";
+                std::string username = stringInput();
+                auto user = userManager->findUser(username);
+                if (user) {
+                    auto observers = list->getObservers();
+                    bool alreadyShared = false;
+
+                    for (auto observer: observers) {
+                        if (observer == user.get()) {
+                            alreadyShared = true;
+                            break;
+                        }
+                    }
+
+                    if (alreadyShared) {
+                        std::cout << "Lista gia' condivisa con " << username << "!\n";
+                    } else {
+                        list->shareListWith(user.get());
+                        std::cout << "Lista condivisa con " << username << "!\n";
+                    }
+                } else {
+                    std::cout << "Utente non trovato.\n";
+                }
                 break;
             }
             case 5: {
