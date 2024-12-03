@@ -15,6 +15,7 @@ public:
     int getAmount() const;
     std::string getName() const;
     bool isBought() const;
+    void changeBought();
 
 private:
     std::string name;

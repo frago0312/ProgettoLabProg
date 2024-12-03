@@ -33,6 +33,8 @@ public:
 
     int getItemCount() const;
 
+    std::shared_ptr<Item> getItemAt(int index) const;
+
     const std::string &getName() const;
 
     void shareListWith(Observer* user) ;

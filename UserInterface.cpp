@@ -129,7 +129,7 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
     while (true) {
         std::cout << "Ecco le tue liste della spesa, scegli quale vuoi aprire:\n";
         for (size_t i = 0; i < lists.size(); ++i) {
-            std::cout << i + 1 << ". " << lists[i]->getName() << ":\t"<<lists[i]->getItemQuantities()<<" oggetti\n";
+            std::cout << i + 1 << ". " << lists[i]->getName() << ":\t"<<lists[i]->getItemCount()<<" oggetti\n";
         }
         std::cout << lists.size() + 1 << ". Torna al menu principale\n";
 
@@ -167,23 +167,25 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
         int i = 1;
         std::cout<<"Lista della spesa: "<<list->getName()<<"\n";
         for (const auto& item : list->getItems()) {
-            std::cout <<i<<". "<< item->getName() << ":\t\t" << item->getAmount() << " unita'\n";
+            std::string status = item->isBought() ? "[x]" : "[ ]";
+            std::cout << i << ". " << status << " " << item->getName()
+                      << ":\t\t" << item->getAmount() << " unita'\n";
             ++i;
         }
         std::cout << "\nScegli un'opzione:\n";
         std::cout << "1. Aggiungi un nuovo elemento\n";
-        std::cout << "2. Rimuovi un elemento\n";
-        std::cout << "3. Condividi questa lista\n";
-        std::cout << "4. Esci dalla lista\n";
+        std::cout << "2. Segna come comprato/da comprare\n";
+        std::cout << "3. Rimuovi un elemento\n";
+        std::cout << "4. Condividi questa lista\n";
+        std::cout << "5. Esci dalla lista\n";
         int choice = integerInput();
         switch (choice) {
             case 1: {
-                std::cout << "Insert item name:";
+                std::cout << "Inserisci il nome dell'oggetto:";
                 std::string name=stringInput();
-                int amount = integerInput("Inserisci la quantita: ");
-                int catChoice=0;
+                int amount = integerInput("Inserisci la quantita': ");
                 ItemCategory category=ItemCategory::None;
-                std::cout << "Select a category:\n";
+                std::cout << "Seleziona una categoria (1-7):\n";
                 std::cout << "1. Groceries\n";
                 std::cout << "2. Clothing\n";
                 std::cout << "3. Electronics\n";
@@ -191,8 +193,7 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
                 std::cout << "5. Health\n";
                 std::cout << "6. Pets\n";
                 std::cout << "7. Extras\n";
-                std::cout << "Enter your choice (1-7): ";
-                std::cin >> choice;
+                int catChoice=integerInput();
                 switch (catChoice) {
                     case 1: category = ItemCategory::Groceries; break;
                     case 2: category = ItemCategory::Clothing; break;
@@ -209,6 +210,26 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
             }
             case 2: {
                 if (list->getItemQuantities()<1)
+                    std::cout << "Non ci sono elementi da comprare\n";
+                else {
+                    std::cout << "Inserisci l'indice dell'elemento da comprare: \n";
+                    const int index = integerInput();
+                    if (index<1 || index>list->getItemCount())
+                        std::cout << "Scelta non valida\n";
+                    else {
+                        auto item = list->getItemAt(index - 1);
+                        if (item) {
+                            item->changeBought();
+                            std::cout << "Elemento aggiornato.\n";
+                        } else {
+                            std::cout << "Errore: elemento non trovato.\n";
+                        }
+                    }
+                }
+                break;
+            }
+            case 3: {
+                if (list->getItemQuantities()<1)
                     std::cout << "Non ci sono elementi da rimuovere\n";
                 else {
                     std::cout << "Inserisci l'indice dell'elemento da rimuovere: \n";
@@ -219,13 +240,13 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
                         list->removeItem(index-1);
                         std::cout << "Elemento rimosso con successo!\n";
                     }
-                    break;
                 }
-            }
-            case 3: {
                 break;
             }
             case 4: {
+                break;
+            }
+            case 5: {
                 keepOpen = false;
                 break;
             }

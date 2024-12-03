@@ -53,6 +53,10 @@ int ShoppingList::getItemCount() const {
     return items.size();
 }
 
+std::shared_ptr<Item> ShoppingList::getItemAt(int index) const {
+    return items.at(index);
+}
+
 const std::string& ShoppingList::getName() const {
     return name;
 }

@@ -30,5 +30,9 @@ bool Item::isBought() const {
     return bought;
 }
 
+void Item::changeBought() {
+    bought=!bought;
+}
+
 
 
