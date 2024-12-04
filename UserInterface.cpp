@@ -197,19 +197,19 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
                 std::cout << "7. Extra\n";
                 int catChoice = integerInput();
                 switch (catChoice) {
-                    case 1: category = ItemCategory::Groceries;
+                    case 1: category = ItemCategory::Alimentari;
                         break;
-                    case 2: category = ItemCategory::Clothing;
+                    case 2: category = ItemCategory::Abbigliamento;
                         break;
-                    case 3: category = ItemCategory::Electronics;
+                    case 3: category = ItemCategory::Elettronica;
                         break;
-                    case 4: category = ItemCategory::Home;
+                    case 4: category = ItemCategory::Casa;
                         break;
-                    case 5: category = ItemCategory::Health;
+                    case 5: category = ItemCategory::Salute;
                         break;
-                    case 6: category = ItemCategory::Pets;
+                    case 6: category = ItemCategory::AnimaliDomestici;
                         break;
-                    case 7: category = ItemCategory::Extras;
+                    case 7: category = ItemCategory::Extra;
                         break;
                     default: category = ItemCategory::None;
                 }
