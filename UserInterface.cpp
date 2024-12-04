@@ -129,6 +129,15 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
     }
 
     while (true) {
+        lists.erase(std::remove_if(lists.begin(), lists.end(), [](const std::shared_ptr<ShoppingList>& list) {
+            return list == nullptr;  // Rimuove gli oggetti nulli
+        }), lists.end());
+
+        if (lists.empty()) {
+            std::cout << "Nessuna lista della spesa trovata.\n";
+            printSeparator();
+            return;
+        }
         std::cout << "Ecco le tue liste della spesa, scegli quale vuoi aprire:\n";
         for (size_t i = 0; i < lists.size(); ++i) {
             std::cout << i + 1 << ". " << lists[i]->getName() << ":\t" << lists[i]->getItemCount() << " oggetti\n";
@@ -299,22 +308,22 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                 break;
             }
             case 5: {
-                std::cout <<
-                        "Vuoi davvero disiscriverti dalla lista? Se sei l'ultimo utente, la lista verra' eliminata.\n";
+                std::cout << "Vuoi davvero disiscriverti dalla lista? Se sei l'ultimo utente, la lista verrà eliminata.\n";
                 std::cout << "1. Si\n";
                 std::cout << "2. No\n";
                 int removeChoice = integerInput();
                 if (removeChoice == 1) {
-                    user->removeShoppingList(list);
-                    std::cout << "Disiscrizione avvenuta con successo!\n";
+                    list->detach(user.get());
+                    if (list->getObservers().empty()) {
+                        list.reset();
+                        std::cout << "La lista e' stata eliminata poiche' non ci sono piu' utenti.\n";
+                    } else {
+                        std::cout << "Disiscrizione avvenuta con successo!\n";
+                    }
                     keepOpen = false;
                 } else {
                     std::cout << "Disiscrizione annullata.\n";
                 }
-                break;
-            }
-            case 6: {
-                keepOpen = false;
                 break;
             }
             default:
