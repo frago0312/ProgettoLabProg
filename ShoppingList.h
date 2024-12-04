@@ -37,8 +37,6 @@ public:
 
     const std::string &getName() const;
 
-    void shareListWith(Observer* user) ;
-
     std::vector<Observer *> getObservers() const;
 
 private:

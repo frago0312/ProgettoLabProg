@@ -60,11 +60,6 @@ const std::string& ShoppingList::getName() const {
     return name;
 }
 
-
-void ShoppingList::shareListWith(Observer* user)  {
-    attach(user);
-}
-
 std::vector<Observer *> ShoppingList::getObservers() const {
     return observers;
 }

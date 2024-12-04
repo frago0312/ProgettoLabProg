@@ -262,18 +262,16 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
                 if (user) {
                     auto observers = list->getObservers();
                     bool alreadyShared = false;
-
                     for (auto observer: observers) {
                         if (observer == user.get()) {
                             alreadyShared = true;
                             break;
                         }
                     }
-
                     if (alreadyShared) {
                         std::cout << "Lista gia' condivisa con " << username << "!\n";
                     } else {
-                        list->shareListWith(user.get());
+                        user->addShoppingList(list);
                         std::cout << "Lista condivisa con " << username << "!\n";
                     }
                 } else {
