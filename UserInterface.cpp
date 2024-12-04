@@ -188,13 +188,13 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
                 int amount = integerInput("Inserisci la quantita': ");
                 ItemCategory category = ItemCategory::None;
                 std::cout << "Seleziona una categoria (1-7):\n";
-                std::cout << "1. Groceries\n";
-                std::cout << "2. Clothing\n";
-                std::cout << "3. Electronics\n";
-                std::cout << "4. Home\n";
-                std::cout << "5. Health\n";
-                std::cout << "6. Pets\n";
-                std::cout << "7. Extras\n";
+                std::cout << "1. Alimentari\n";
+                std::cout << "2. Abbigliamento\n";
+                std::cout << "3. Elettronica\n";
+                std::cout << "4. Casa\n";
+                std::cout << "5. Salute\n";
+                std::cout << "6. Animali domestici\n";
+                std::cout << "7. Extra\n";
                 int catChoice = integerInput();
                 switch (catChoice) {
                     case 1: category = ItemCategory::Groceries;

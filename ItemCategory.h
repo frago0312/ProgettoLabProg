@@ -9,13 +9,14 @@
 
 enum class ItemCategory {
     None,
-    Groceries,
-    Clothing,
-    Electronics,
-    Home,
-    Health,
-    Pets,
-    Extras
+    Alimentari,
+    Abbigliamento,
+    Elettronica,
+    Casa,
+    Salute,
+    AnimaliDomestici,
+    Extra
+
 };
 
 
