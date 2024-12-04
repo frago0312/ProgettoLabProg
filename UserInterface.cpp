@@ -120,7 +120,7 @@ bool UserInterface::mainMenu(std::shared_ptr<User> user) {
 
 // Funzione per visualizzare le liste della spesa dell'utente
 void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
-    const auto &lists = user->getShoppingLists();
+    auto lists = user->getShoppingLists();
 
     if (lists.empty()) {
         std::cout << "Nessuna lista della spesa trovata.\n";
@@ -139,7 +139,7 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
 
         if (choice >= 1 && choice <= lists.size()) {
             // Apri la lista selezionata
-            openList(lists[choice - 1]);
+            openList(lists[choice - 1], user);
             printSeparator();
         } else if (choice == lists.size() + 1) {
             // Torna al menu principale
@@ -163,7 +163,7 @@ void UserInterface::createShoppingList(std::shared_ptr<User> user) {
 }
 
 // Funzione per visualizzare una lista della spesa
-void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
+void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_ptr<User> user) {
     bool keepOpen = true;
     while (keepOpen) {
         int i = 1;
@@ -179,7 +179,8 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
         std::cout << "2. Segna come comprato/da comprare\n";
         std::cout << "3. Rimuovi un elemento\n";
         std::cout << "4. Condividi questa lista\n";
-        std::cout << "5. Esci dalla lista\n";
+        std::cout << "5. Disiscriviti/elimina la lista\n";
+        std::cout << "6. Esci dalla lista\n";
         int choice = integerInput();
         switch (choice) {
             case 1: {
@@ -276,12 +277,12 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
             case 4: {
                 std::cout << "Inserisci il nome dell'utente: ";
                 std::string username = stringInput();
-                auto user = userManager->findUser(username);
-                if (user) {
+                auto shareToUser = userManager->findUser(username);
+                if (shareToUser) {
                     auto observers = list->getObservers();
                     bool alreadyShared = false;
                     for (auto observer: observers) {
-                        if (observer == user.get()) {
+                        if (observer == shareToUser.get()) {
                             alreadyShared = true;
                             break;
                         }
@@ -298,6 +299,21 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
                 break;
             }
             case 5: {
+                std::cout <<
+                        "Vuoi davvero disiscriverti dalla lista? Se sei l'ultimo utente, la lista verra' eliminata.\n";
+                std::cout << "1. Si\n";
+                std::cout << "2. No\n";
+                int removeChoice = integerInput();
+                if (removeChoice == 1) {
+                    user->removeShoppingList(list);
+                    std::cout << "Disiscrizione avvenuta con successo!\n";
+                    keepOpen = false;
+                } else {
+                    std::cout << "Disiscrizione annullata.\n";
+                }
+                break;
+            }
+            case 6: {
                 keepOpen = false;
                 break;
             }
@@ -306,3 +322,4 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
         }
     }
 }
+

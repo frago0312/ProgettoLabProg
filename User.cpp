@@ -32,11 +32,8 @@ void User::addShoppingList(std::shared_ptr<ShoppingList> list) {
 }
 
 void User::removeShoppingList(std::shared_ptr<ShoppingList> list) {
-    auto it = std::find(shoppingLists.begin(), shoppingLists.end(), list);
-    if (it != shoppingLists.end()) {
-        list->detach(this);
-        shoppingLists.erase(it);
-    }
+    list->detach(this);
+    shoppingLists.erase(std::remove(shoppingLists.begin(), shoppingLists.end(), list), shoppingLists.end());
 }
 
 std::vector<std::shared_ptr<ShoppingList> > User::getShoppingLists() const {

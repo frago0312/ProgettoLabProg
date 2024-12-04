@@ -16,7 +16,7 @@ public:
 
     bool mainMenu(std::shared_ptr<User> user);
 
-    void openList(const std::shared_ptr<ShoppingList> & list);
+    void openList(std::shared_ptr<ShoppingList> & list, std::shared_ptr<User> user);
 
     void displayShoppingLists(std::shared_ptr<User> user);
 

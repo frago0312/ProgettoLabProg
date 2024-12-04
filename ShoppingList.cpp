@@ -31,6 +31,7 @@ void ShoppingList::detach(Observer* observer)  {
     observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
 }
 
+
 void ShoppingList::notifyObservers(const std::string& message) {
     for (const auto& observer : observers) {
         observer->update(message);
