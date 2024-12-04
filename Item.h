@@ -13,6 +13,7 @@ class Item {
 public:
     Item(std::string n, int a, ItemCategory c);
     int getAmount() const;
+    void increaseAmount(int a);
     std::string getName() const;
     bool isBought() const;
     void changeBought();

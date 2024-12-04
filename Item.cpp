@@ -22,6 +22,10 @@ int Item::getAmount() const {
     return amount;
 }
 
+void Item::increaseAmount(int a) {
+    amount+=a;
+}
+
 std::string Item::getName() const {
     return name;
 }

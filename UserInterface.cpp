@@ -175,7 +175,7 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
             ++i;
         }
         std::cout << "\nScegli un'opzione:\n";
-        std::cout << "1. Aggiungi un nuovo elemento\n";
+        std::cout << "1. Aggiungi un nuovo elemento/aumenta esistente\n";
         std::cout << "2. Segna come comprato/da comprare\n";
         std::cout << "3. Rimuovi un elemento\n";
         std::cout << "4. Condividi questa lista\n";
@@ -185,37 +185,55 @@ void UserInterface::openList(const std::shared_ptr<ShoppingList> &list) {
             case 1: {
                 std::cout << "Inserisci il nome dell'oggetto:";
                 std::string name = stringInput();
-                int amount = integerInput("Inserisci la quantita': ");
-                ItemCategory category = ItemCategory::None;
-                std::cout << "Seleziona una categoria (1-7):\n";
-                std::cout << "1. Alimentari\n";
-                std::cout << "2. Abbigliamento\n";
-                std::cout << "3. Elettronica\n";
-                std::cout << "4. Casa\n";
-                std::cout << "5. Salute\n";
-                std::cout << "6. Animali domestici\n";
-                std::cout << "7. Extra\n";
-                int catChoice = integerInput();
-                switch (catChoice) {
-                    case 1: category = ItemCategory::Alimentari;
+                bool itemFound = false;
+                for (auto it: list->getItems()) {
+                    if (it->getName() == name) {
+                        itemFound = true;
+                        std::cout << "Elemento gia' presente nella lista, vuoi aumentarne la quantita'?\n";
+                        std::cout << "1. Si\n";
+                        std::cout << "2. No\n";
+                        int amountChoice = integerInput();
+                        if (amountChoice == 1) {
+                            int addQuantity = integerInput("Inserisci la quantita' da aggiungere: ");
+                            it->increaseAmount(addQuantity);
+                            std::cout << "Quantita' aumentata con successo!\n";
+                        }
                         break;
-                    case 2: category = ItemCategory::Abbigliamento;
-                        break;
-                    case 3: category = ItemCategory::Elettronica;
-                        break;
-                    case 4: category = ItemCategory::Casa;
-                        break;
-                    case 5: category = ItemCategory::Salute;
-                        break;
-                    case 6: category = ItemCategory::AnimaliDomestici;
-                        break;
-                    case 7: category = ItemCategory::Extra;
-                        break;
-                    default: category = ItemCategory::None;
+                    }
                 }
-                list->addItem(std::make_shared<Item>(name, amount, category));
-                std::cout << "Elemento aggiunto con successo!\n";
-                list->notifyObservers("un oggetto e' stato aggiunto alla lista " + list->getName());
+                if (!itemFound) {
+                    int amount = integerInput("Inserisci la quantita': ");
+                    ItemCategory category = ItemCategory::None;
+                    std::cout << "Seleziona una categoria (1-7):\n";
+                    std::cout << "1. Alimentari\n";
+                    std::cout << "2. Abbigliamento\n";
+                    std::cout << "3. Elettronica\n";
+                    std::cout << "4. Casa\n";
+                    std::cout << "5. Salute\n";
+                    std::cout << "6. Animali domestici\n";
+                    std::cout << "7. Extra\n";
+                    int catChoice = integerInput();
+                    switch (catChoice) {
+                        case 1: category = ItemCategory::Alimentari;
+                            break;
+                        case 2: category = ItemCategory::Abbigliamento;
+                            break;
+                        case 3: category = ItemCategory::Elettronica;
+                            break;
+                        case 4: category = ItemCategory::Casa;
+                            break;
+                        case 5: category = ItemCategory::Salute;
+                            break;
+                        case 6: category = ItemCategory::AnimaliDomestici;
+                            break;
+                        case 7: category = ItemCategory::Extra;
+                            break;
+                        default: category = ItemCategory::None;
+                    }
+                    list->addItem(std::make_shared<Item>(name, amount, category));
+                    std::cout << "Elemento aggiunto con successo!\n";
+                    list->notifyObservers("un oggetto e' stato aggiunto alla lista " + list->getName());
+                }
                 break;
             }
             case 2: {
