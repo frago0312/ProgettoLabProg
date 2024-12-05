@@ -4,6 +4,7 @@
 
 #include "ShoppingList.h"
 #include "Utility.h"
+#include "User.h"
 
 #include <algorithm>
 #include <iostream>
@@ -30,7 +31,6 @@ void ShoppingList::attach(Observer* observer)  {
 void ShoppingList::detach(Observer* observer)  {
     observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
 }
-
 
 void ShoppingList::notifyObservers(const std::string& message) {
     for (const auto& observer : observers) {
@@ -63,4 +63,8 @@ const std::string& ShoppingList::getName() const {
 
 std::vector<Observer *> ShoppingList::getObservers() const {
     return observers;
+}
+
+bool ShoppingList::isDeletable() const {
+    return observers.empty();
 }

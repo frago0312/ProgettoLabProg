@@ -18,6 +18,8 @@ public:
 
     void openList(std::shared_ptr<ShoppingList> & list, std::shared_ptr<User> user);
 
+    void unsubscribeFromList(std::shared_ptr<User> user, std::shared_ptr<ShoppingList> list);
+
     void displayShoppingLists(std::shared_ptr<User> user);
 
     void createShoppingList(std::shared_ptr<User> user);

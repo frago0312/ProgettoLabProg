@@ -12,6 +12,7 @@
 #include "Observer.h"
 #include "Subject.h"
 
+class User;
 
 class ShoppingList : public Subject{
 public:
@@ -38,6 +39,8 @@ public:
     const std::string &getName() const;
 
     std::vector<Observer *> getObservers() const;
+
+    bool isDeletable() const;
 
 private:
     std::string name;

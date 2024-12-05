@@ -31,11 +31,18 @@ void User::addShoppingList(std::shared_ptr<ShoppingList> list) {
     list->attach(this);
 }
 
-void User::removeShoppingList(std::shared_ptr<ShoppingList> list) {
-    list->detach(this);
-    shoppingLists.erase(std::remove(shoppingLists.begin(), shoppingLists.end(), list), shoppingLists.end());
-}
+
 
 std::vector<std::shared_ptr<ShoppingList> > User::getShoppingLists() const {
     return shoppingLists;
+}
+
+void User::removeShoppingList(std::shared_ptr<ShoppingList> list) {
+    // Verifica se l'utente è presente nella lista e rimuovilo
+    auto it = std::find(shoppingLists.begin(), shoppingLists.end(), list);
+    if (it != shoppingLists.end()) {
+        shoppingLists.erase(it);
+        // Rimuovi l'utente come osservatore dalla lista
+        list->detach(this);  // Usando "this" perché "User" è un Observer
+    }
 }

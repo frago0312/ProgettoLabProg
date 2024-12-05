@@ -120,7 +120,16 @@ bool UserInterface::mainMenu(std::shared_ptr<User> user) {
 
 // Funzione per visualizzare le liste della spesa dell'utente
 void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
+    // Ottieni le liste associate all'utente
     auto lists = user->getShoppingLists();
+
+    // Sincronizza le liste rimuovendo quelle non più valide
+    lists.erase(std::remove_if(lists.begin(), lists.end(),
+        [&user](const std::shared_ptr<ShoppingList>& list) {
+            // Rimuovi le liste a cui l'utente non è più iscritto
+            return !list || std::find(list->getObservers().begin(), list->getObservers().end(), user.get()) == list->getObservers().end();
+        }),
+        lists.end());
 
     if (lists.empty()) {
         std::cout << "Nessuna lista della spesa trovata.\n";
@@ -129,15 +138,6 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
     }
 
     while (true) {
-        lists.erase(std::remove_if(lists.begin(), lists.end(), [](const std::shared_ptr<ShoppingList>& list) {
-            return list == nullptr;  // Rimuove gli oggetti nulli
-        }), lists.end());
-
-        if (lists.empty()) {
-            std::cout << "Nessuna lista della spesa trovata.\n";
-            printSeparator();
-            return;
-        }
         std::cout << "Ecco le tue liste della spesa, scegli quale vuoi aprire:\n";
         for (size_t i = 0; i < lists.size(); ++i) {
             std::cout << i + 1 << ". " << lists[i]->getName() << ":\t" << lists[i]->getItemCount() << " oggetti\n";
@@ -161,6 +161,7 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
         }
     }
 }
+
 
 
 // Funzione per creare una nuova lista della spesa e collegarla all'utente
@@ -299,7 +300,7 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                     if (alreadyShared) {
                         std::cout << "Lista gia' condivisa con " << username << "!\n";
                     } else {
-                        user->addShoppingList(list);
+                        shareToUser->addShoppingList(list);
                         std::cout << "Lista condivisa con " << username << "!\n";
                     }
                 } else {
@@ -308,22 +309,13 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                 break;
             }
             case 5: {
-                std::cout << "Vuoi davvero disiscriverti dalla lista? Se sei l'ultimo utente, la lista verrà eliminata.\n";
-                std::cout << "1. Si\n";
-                std::cout << "2. No\n";
-                int removeChoice = integerInput();
-                if (removeChoice == 1) {
-                    list->detach(user.get());
-                    if (list->getObservers().empty()) {
-                        list.reset();
-                        std::cout << "La lista e' stata eliminata poiche' non ci sono piu' utenti.\n";
-                    } else {
-                        std::cout << "Disiscrizione avvenuta con successo!\n";
-                    }
-                    keepOpen = false;
-                } else {
-                    std::cout << "Disiscrizione annullata.\n";
-                }
+                unsubscribeFromList(user, list);
+                keepOpen = false;
+                break;
+            }
+            case 6: {
+                std::cout << "Uscita dalla lista...\n";
+                keepOpen = false;
                 break;
             }
             default:
@@ -332,3 +324,24 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
     }
 }
 
+void UserInterface::unsubscribeFromList(std::shared_ptr<User> user, std::shared_ptr<ShoppingList> list) {
+    if (!user || !list) return;
+
+    std::cout << "Vuoi davvero disiscriverti dalla lista? Se sei l'ultimo utente, la lista verrà eliminata.\n";
+    std::cout << "1. Si\n2. No\n";
+
+    int choice = integerInput();
+    if (choice == 1) {
+        // Rimuovi l'utente dalla lista
+        user->removeShoppingList(list);
+
+        // Verifica se la lista ha ancora degli osservatori
+        if (list->isDeletable()) {
+            std::cout << "Sei stato l'ultimo utente. La lista verrà eliminata automaticamente.\n";
+        } else {
+            std::cout << "Disiscrizione avvenuta con successo. Altri utenti stanno ancora usando questa lista.\n";
+        }
+    } else {
+        std::cout << "Disiscrizione annullata.\n";
+    }
+}
