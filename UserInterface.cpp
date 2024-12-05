@@ -138,7 +138,7 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
     }
 
     while (true) {
-        std::cout << "Ecco le tue liste della spesa, scegli quale vuoi aprire:\n";
+        std::cout << "Ecco le tue liste della spesa, scegli quale vuoi aprire: \n";
         for (size_t i = 0; i < lists.size(); ++i) {
             std::cout << i + 1 << ". " << lists[i]->getName() << ":\t" << lists[i]->getItemCount() << " oggetti\n";
         }
