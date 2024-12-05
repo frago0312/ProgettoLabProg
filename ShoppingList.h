@@ -42,6 +42,8 @@ public:
 
     bool isDeletable() const;
 
+    void setName(const std::string &name);
+
 private:
     std::string name;
     std::vector<std::shared_ptr<Item> > items;

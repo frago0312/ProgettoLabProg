@@ -68,3 +68,7 @@ std::vector<Observer *> ShoppingList::getObservers() const {
 bool ShoppingList::isDeletable() const {
     return observers.empty();
 }
+
+void ShoppingList::setName(const std::string &name) {
+    this->name = name;
+}

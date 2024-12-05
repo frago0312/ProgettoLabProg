@@ -327,7 +327,7 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
 void UserInterface::unsubscribeFromList(std::shared_ptr<User> user, std::shared_ptr<ShoppingList> list) {
     if (!user || !list) return;
 
-    std::cout << "Vuoi davvero disiscriverti dalla lista? Se sei l'ultimo utente, la lista verrà eliminata.\n";
+    std::cout << "Vuoi davvero disiscriverti dalla lista? Se sei l'ultimo utente, la lista verra' eliminata.\n";
     std::cout << "1. Si\n2. No\n";
 
     int choice = integerInput();
@@ -341,6 +341,7 @@ void UserInterface::unsubscribeFromList(std::shared_ptr<User> user, std::shared_
         } else {
             std::cout << "Disiscrizione avvenuta con successo. Altri utenti stanno ancora usando questa lista.\n";
         }
+        std::cout << "Esci dal menu' e rientra per vedere le modifiche"<<std::endl;
     } else {
         std::cout << "Disiscrizione annullata.\n";
     }
