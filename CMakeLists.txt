@@ -3,7 +3,9 @@ project(ProgettoLabProg0924)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(ProgettoLabProg0924 main.cpp
+# Creazione dell'eseguibile principale
+add_executable(ProgettoLabProg0924
+        main.cpp
         ItemCategory.h
         Item.cpp
         Item.h
@@ -20,3 +22,19 @@ add_executable(ProgettoLabProg0924 main.cpp
         Utility.cpp
         Utility.h
 )
+
+# Scaricare e rendere disponibile Google Test
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        release-1.12.1
+)
+
+FetchContent_MakeAvailable(googletest)
+
+# Abilita il supporto ai test
+enable_testing()
+
+# Aggiungere la sottodirectory per i test
+add_subdirectory(tests)
