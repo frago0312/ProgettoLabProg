@@ -13,7 +13,9 @@ User::User(const std::string &name)
 
 User::~User() {
     for (auto& list : shoppingLists) {
-        list->detach(this);  // Rimuove l'observer da ogni lista
+        if (list) {
+            list->detach(this);  // Rimuove l'observer da ogni lista
+        }
     }
     shoppingLists.clear();  // Svuota il vettore
 }

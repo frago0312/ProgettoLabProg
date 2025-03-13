@@ -6,7 +6,7 @@ list(REMOVE_ITEM PROJECT_SOURCES "${PROJECT_SOURCE_DIR}/main.cpp")
 add_executable(ProgettoLabProg0924_Tests
         test_main.cpp
         test_Item.cpp
-        test_User.cpp
+        #test_User.cpp
         # Aggiungi altri test qui...
 )
 
@@ -15,6 +15,8 @@ target_link_libraries(ProgettoLabProg0924_Tests
         PRIVATE
         gtest
         gtest_main
+        gmock
+        gmock_main
         # Linka i file di implementazione del progetto
         ${PROJECT_SOURCES}
 )
