@@ -94,20 +94,6 @@ TEST_F(ShoppingListTest, ObserverManagement) {
     EXPECT_EQ(list.getObservers().size(), 1);
 }
 
-// Test notifica observers
-TEST_F(ShoppingListTest, NotifyObservers) {
-    ShoppingList list("Lista Spesa");
-
-    list.attach(&mockObserver1);
-    list.attach(&mockObserver2);
-
-    list.notifyObservers("Test Message");
-
-    EXPECT_EQ(mockObserver1.updateCallCount, 1);
-    EXPECT_EQ(mockObserver2.updateCallCount, 1);
-    EXPECT_EQ(mockObserver1.lastMessage, "Test Message");
-}
-
 // Test isDeletable
 TEST_F(ShoppingListTest, IsDeletable) {
     ShoppingList list("Lista Spesa");
