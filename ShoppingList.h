@@ -18,6 +18,8 @@ class ShoppingList : public Subject{
 public:
     explicit ShoppingList();
 
+    ShoppingList(const std::string &listName);
+
     void addItem(std::shared_ptr<Item> item);
 
     void removeItem(int index);

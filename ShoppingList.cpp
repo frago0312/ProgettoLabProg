@@ -14,6 +14,10 @@ ShoppingList::ShoppingList(){
     name = stringInput();
 }
 
+//Ho creato questo secondo costruttore per implementare i google test
+ShoppingList::ShoppingList(const std::string& listName) : name(listName) {
+}
+
 void ShoppingList::addItem(std::shared_ptr<Item> item) {
     items.push_back(item);
 }
