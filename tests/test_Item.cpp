@@ -34,3 +34,27 @@ TEST_F(ItemTest, ChangeBoughtWorks) {
     item->changeBought();
     EXPECT_FALSE(item->isBought());
 }
+
+TEST_F(ItemTest, IncreaseAmountPositive) {
+    item->increaseAmount(5);
+    EXPECT_EQ(item->getAmount(), 8); // Supponendo esista un metodo getAmount()
+    EXPECT_FALSE(item->isBought());  // Supponendo esista un metodo isBought()
+}
+
+TEST_F(ItemTest, DecreaseAmountBelowZero) {
+    item->increaseAmount(-4);
+    EXPECT_EQ(item->getAmount(), 0);
+    EXPECT_TRUE(item->isBought());
+}
+
+TEST_F(ItemTest, DecreaseAmountToZero) {
+    item->increaseAmount(-3);
+    EXPECT_EQ(item->getAmount(), 0);
+    EXPECT_TRUE(item->isBought());
+}
+
+TEST_F(ItemTest, NoChangeWithZero) {
+    item->increaseAmount(0);
+    EXPECT_EQ(item->getAmount(), 3);
+    EXPECT_FALSE(item->isBought());
+}

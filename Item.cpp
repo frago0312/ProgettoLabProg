@@ -23,7 +23,15 @@ int Item::getAmount() const {
 }
 
 void Item::increaseAmount(int a) {
-    amount+=a;
+    if(a<1) {
+        amount+=a;
+        if (amount<=0) {
+            amount=0;
+            bought=true;
+        }
+    } else {
+        amount+=a;
+    }
 }
 
 std::string Item::getName() const {
