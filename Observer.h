@@ -8,8 +8,8 @@
 
 class Observer {
 public:
-    virtual void update(const std::string& message) = 0;
     virtual ~Observer() = default;
+    virtual void update(const std::string& message) = 0;
 };
 
 

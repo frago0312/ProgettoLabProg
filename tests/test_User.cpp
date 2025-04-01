@@ -58,13 +58,13 @@ TEST_F(ShoppingListTest, GetItemQuantities) {
 TEST_F(ShoppingListTest, ObserverPattern) {
     ShoppingList list("Observer Test List");  // Passa un nome esplicito
 
-    list.attach(observer.get());
+    list.attach(observer);
     EXPECT_EQ(list.getObservers().size(), 1);
 
     list.notifyObservers("Test Message");
     EXPECT_EQ(observer->lastMessage, "Test Message");
 
-    list.detach(observer.get());
+    list.detach(observer);
     EXPECT_TRUE(list.getObservers().empty());
 }
 
@@ -72,10 +72,10 @@ TEST_F(ShoppingListTest, Deletability) {
     ShoppingList list("Deletability Test List");
     EXPECT_TRUE(list.isDeletable());
 
-    list.attach(observer.get());
+    list.attach(observer);
     EXPECT_FALSE(list.isDeletable());
 
-    list.detach(observer.get());
+    list.detach(observer);
     EXPECT_TRUE(list.isDeletable());
 }
 

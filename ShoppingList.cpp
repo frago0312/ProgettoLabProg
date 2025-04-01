@@ -29,7 +29,9 @@ void ShoppingList::removeItem(int index) {
 }
 
 void ShoppingList::attach(std::shared_ptr<Observer> observer) {
-    observers.push_back(observer);
+    if (std::find(observers.begin(), observers.end(), observer) == observers.end()) {
+        observers.push_back(observer);
+    }
 }
 
 void ShoppingList::detach(std::shared_ptr<Observer> observer) {
@@ -38,11 +40,7 @@ void ShoppingList::detach(std::shared_ptr<Observer> observer) {
 
 void ShoppingList::notifyObservers(const std::string& message) {
     for (const auto& observer : observers) {
-        if (observer) {
-            observer->update(message);
-        } else {
-            std::cerr << "Errore: Observer nullo!" << std::endl;
-        }
+        observer->update(message);
     }
 }
 
@@ -69,7 +67,7 @@ const std::string& ShoppingList::getName() const {
     return name;
 }
 
-std::vector<std::shared_ptr<Observer>> ShoppingList::getObservers() const {
+const std::vector<std::shared_ptr<Observer>> & ShoppingList::getObservers() const {
     return observers;
 }
 

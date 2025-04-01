@@ -40,7 +40,7 @@ public:
 
     const std::string &getName() const;
 
-    std::vector<std::shared_ptr<Observer>> getObservers() const;
+    const std::vector<std::shared_ptr<Observer>>& getObservers() const;
 
     bool isDeletable() const;
 
