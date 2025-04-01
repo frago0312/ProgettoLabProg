@@ -12,8 +12,8 @@
 
 class Subject {
 public:
-    virtual void attach(Observer* observer)=0;
-    virtual void detach(Observer* observer)=0;
+    virtual void attach(std::shared_ptr<Observer> observer)=0;
+    virtual void detach(std::shared_ptr<Observer> observer)=0;
     virtual void notifyObservers(const std::string& message)=0;
     virtual ~Subject() = default;
 };

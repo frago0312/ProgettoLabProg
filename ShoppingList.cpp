@@ -28,17 +28,21 @@ void ShoppingList::removeItem(int index) {
         }
 }
 
-void ShoppingList::attach(Observer* observer)  {
+void ShoppingList::attach(std::shared_ptr<Observer> observer) {
     observers.push_back(observer);
 }
 
-void ShoppingList::detach(Observer* observer)  {
+void ShoppingList::detach(std::shared_ptr<Observer> observer) {
     observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
 }
 
 void ShoppingList::notifyObservers(const std::string& message) {
     for (const auto& observer : observers) {
-        observer->update(message);
+        if (observer) {
+            observer->update(message);
+        } else {
+            std::cerr << "Errore: Observer nullo!" << std::endl;
+        }
     }
 }
 
@@ -65,7 +69,7 @@ const std::string& ShoppingList::getName() const {
     return name;
 }
 
-std::vector<Observer *> ShoppingList::getObservers() const {
+std::vector<std::shared_ptr<Observer>> ShoppingList::getObservers() const {
     return observers;
 }
 
@@ -76,3 +80,5 @@ bool ShoppingList::isDeletable() const {
 void ShoppingList::setName(const std::string &name) {
     this->name = name;
 }
+
+

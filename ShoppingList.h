@@ -24,9 +24,9 @@ public:
 
     void removeItem(int index);
 
-    void attach(Observer* observer) override;
+    void attach(std::shared_ptr<Observer> observer) override;
 
-    void detach(Observer* observer) override;
+    void detach(std::shared_ptr<Observer> observer) override;
 
     void notifyObservers(const std::string& message) override;
 
@@ -40,16 +40,20 @@ public:
 
     const std::string &getName() const;
 
-    std::vector<Observer *> getObservers() const;
+    std::vector<std::shared_ptr<Observer>> getObservers() const;
 
     bool isDeletable() const;
 
     void setName(const std::string &name);
 
+    size_t getObserverCount() const {
+        return observers.size();
+    }
+
 private:
     std::string name;
     std::vector<std::shared_ptr<Item> > items;
-    std::vector<Observer*> observers;
+    std::vector<std::shared_ptr<Observer>> observers;
 };
 
 

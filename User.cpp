@@ -14,7 +14,7 @@ User::User(const std::string &name)
 User::~User() {
     for (auto& list : shoppingLists) {
         if (list) {
-            list->detach(this);  // Rimuove l'observer da ogni lista
+            list->detach(shared_from_this());  // Rimuove l'observer da ogni lista
         }
     }
     shoppingLists.clear();  // Svuota il vettore
@@ -30,7 +30,7 @@ std::string User::getName() const {
 
 void User::addShoppingList(std::shared_ptr<ShoppingList> list) {
     shoppingLists.push_back(list);
-    list->attach(this);
+    list->attach(shared_from_this());
 }
 
 
@@ -45,6 +45,6 @@ void User::removeShoppingList(std::shared_ptr<ShoppingList> list) {
     if (it != shoppingLists.end()) {
         shoppingLists.erase(it);
         // Rimuovi l'utente come osservatore dalla lista
-        list->detach(this);  // Usando "this" perché "User" è un Observer
+        list->detach(shared_from_this());  // Usando "this" perché "User" è un Observer
     }
 }

@@ -127,7 +127,7 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
     lists.erase(std::remove_if(lists.begin(), lists.end(),
         [&user](const std::shared_ptr<ShoppingList>& list) {
             // Rimuovi le liste a cui l'utente non è più iscritto
-            return !list || std::find(list->getObservers().begin(), list->getObservers().end(), user.get()) == list->getObservers().end();
+            return !list || std::find(list->getObservers().begin(), list->getObservers().end(), user) == list->getObservers().end();
         }),
         lists.end());
 
@@ -298,7 +298,7 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                     auto observers = list->getObservers();
                     bool alreadyShared = false;
                     for (auto observer: observers) {
-                        if (observer == shareToUser.get()) {
+                        if (observer == shareToUser) {
                             alreadyShared = true;
                             break;
                         }
