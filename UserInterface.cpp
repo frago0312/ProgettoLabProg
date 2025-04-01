@@ -213,7 +213,13 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                     }
                 }
                 if (!itemFound) {
-                    int amount = integerInput("Inserisci la quantita': ");
+                    std::cout << "Inserisci la quantita': ";
+                    int amount = 0;
+                    while (amount < 1) {
+                        amount = integerInput();
+                        if (amount < 1)
+                            std::cout << "La quantita' deve essere almeno 1\nInserisci la quantita': ";
+                    }
                     ItemCategory category = ItemCategory::None;
                     std::cout << "Seleziona una categoria (1-7):\n";
                     std::cout << "1. Alimentari\n";

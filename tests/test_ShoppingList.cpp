@@ -65,7 +65,7 @@ TEST_F(ShoppingListTest, RemoveItemTest) {
     EXPECT_EQ(list.getItemAt(0), testItem2);
 }
 
-// Test calcolo quantità totale items (cambiato nome)
+// Test calcolo quantità totale items
 TEST_F(ShoppingListTest, CalculateTotalItemQuantitiesTest) {
     // Crea nuovi item locali invece di usare quelli di classe
     auto localItem1 = std::make_shared<Item>("Mele", 2, ItemCategory::Alimentari);

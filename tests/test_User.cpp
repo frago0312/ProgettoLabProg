@@ -69,7 +69,7 @@ TEST_F(ShoppingListTest, ObserverPattern) {
 }
 
 TEST_F(ShoppingListTest, Deletability) {
-    ShoppingList list("Deletability Test List");  // Passa un nome esplicito
+    ShoppingList list("Deletability Test List");
     EXPECT_TRUE(list.isDeletable());
 
     list.attach(observer.get());
@@ -80,7 +80,8 @@ TEST_F(ShoppingListTest, Deletability) {
 }
 
 TEST_F(ShoppingListTest, NameManagement) {
-    ShoppingList list("Original Name");  // Passa un nome esplicito
+    ShoppingList list("Original Name");
     list.setName("Spesa Settimanale");
     EXPECT_EQ(list.getName(), "Spesa Settimanale");
 }
+
