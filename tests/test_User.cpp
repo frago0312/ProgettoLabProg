@@ -25,6 +25,7 @@ protected:
     }
 };
 
+// Verifica che il costruttore inizializzi correttamente la lista della spesa
 TEST_F(ShoppingListTest, DefaultConstructor) {
     ShoppingList list("Test List");
     EXPECT_TRUE(list.getItems().empty());
@@ -32,6 +33,7 @@ TEST_F(ShoppingListTest, DefaultConstructor) {
     EXPECT_EQ(list.getItemCount(), 0);
 }
 
+// Controlla che l'aggiunta e la rimozione degli oggetti funzionino correttamente
 TEST_F(ShoppingListTest, AddRemoveItems) {
     ShoppingList list("Test List");
 
@@ -47,16 +49,18 @@ TEST_F(ShoppingListTest, AddRemoveItems) {
     EXPECT_EQ(list.getItemAt(0), item2);
 }
 
+// Verifica che getItemQuantities() restituisca la quantità totale corretta
 TEST_F(ShoppingListTest, GetItemQuantities) {
-    ShoppingList list("Test List");  // Passa un nome esplicito
+    ShoppingList list("Test List");
     list.addItem(item1);
     list.addItem(item2);
 
     EXPECT_EQ(list.getItemQuantities(), 7); // 5 mele + 2 pani
 }
 
+// Controlla che il pattern Observer funzioni correttamente
 TEST_F(ShoppingListTest, ObserverPattern) {
-    ShoppingList list("Observer Test List");  // Passa un nome esplicito
+    ShoppingList list("Observer Test List");
 
     list.attach(observer);
     EXPECT_EQ(list.getObservers().size(), 1);
@@ -68,6 +72,7 @@ TEST_F(ShoppingListTest, ObserverPattern) {
     EXPECT_TRUE(list.getObservers().empty());
 }
 
+// Verifica se la lista della spesa è eliminabile in base agli osservatori
 TEST_F(ShoppingListTest, Deletability) {
     ShoppingList list("Deletability Test List");
     EXPECT_TRUE(list.isDeletable());
@@ -79,6 +84,7 @@ TEST_F(ShoppingListTest, Deletability) {
     EXPECT_TRUE(list.isDeletable());
 }
 
+// Controlla che la gestione del nome della lista funzioni correttamente
 TEST_F(ShoppingListTest, NameManagement) {
     ShoppingList list("Original Name");
     list.setName("Spesa Settimanale");

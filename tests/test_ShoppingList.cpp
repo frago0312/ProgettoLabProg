@@ -4,7 +4,6 @@
 #include "../Item.h"
 #include "../Observer.h"
 
-// Mock Observer per testare le notifiche
 class MockObserver : public Observer {
 public:
     int updateCallCount = 0;
@@ -31,13 +30,13 @@ protected:
     }
 };
 
-// Test del costruttore con nome
+// Verifica che il costruttore imposti correttamente il nome della lista
 TEST_F(ShoppingListTest, ConstructorWithNameTest) {
     ShoppingList list("Lista Spesa");
     EXPECT_EQ(list.getName(), "Lista Spesa");
 }
 
-// Test aggiunta item
+// Controlla che l'aggiunta di un item funzioni correttamente
 TEST_F(ShoppingListTest, AddItemTest) {
     ShoppingList list("Lista Spesa");
     list.addItem(testItem1);
@@ -46,7 +45,7 @@ TEST_F(ShoppingListTest, AddItemTest) {
     EXPECT_EQ(list.getItemAt(0), testItem1);
 }
 
-// Test rimozione item
+// Verifica che la rimozione di un item funzioni correttamente
 TEST_F(ShoppingListTest, RemoveItemTest) {
     ShoppingList list("Lista Spesa");
     list.addItem(testItem1);
@@ -58,7 +57,7 @@ TEST_F(ShoppingListTest, RemoveItemTest) {
     EXPECT_EQ(list.getItemAt(0), testItem2);
 }
 
-// Test calcolo quantità totale items
+// Controlla che il calcolo delle quantità totali degli item sia corretto
 TEST_F(ShoppingListTest, CalculateTotalItemQuantitiesTest) {
     auto localItem1 = std::make_shared<Item>("Mele", 2, ItemCategory::Alimentari);
     auto localItem2 = std::make_shared<Item>("Pane", 1, ItemCategory::Alimentari);
@@ -72,7 +71,7 @@ TEST_F(ShoppingListTest, CalculateTotalItemQuantitiesTest) {
     EXPECT_EQ(totalQuantities, 3);
 }
 
-// Test isDeletable
+// Verifica se la lista è eliminabile in base agli osservatori collegati
 TEST_F(ShoppingListTest, IsDeletable) {
     ShoppingList list("Lista Spesa");
 
@@ -83,7 +82,7 @@ TEST_F(ShoppingListTest, IsDeletable) {
     EXPECT_FALSE(list.isDeletable());
 }
 
-// Test set e get nome
+// Controlla che l'impostazione e il recupero del nome funzionino correttamente
 TEST_F(ShoppingListTest, SetAndGetName) {
     ShoppingList list("Lista Spesa");
 
