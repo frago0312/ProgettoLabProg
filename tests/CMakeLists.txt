@@ -8,7 +8,7 @@ add_executable(ProgettoLabProg0924_Tests
         test_Item.cpp
         test_User.cpp
         test_ShoppingList.cpp
-        #test_User.cpp
+        test_Observer.cpp
         # Aggiungi altri test qui...
 )
 
