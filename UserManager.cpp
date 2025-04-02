@@ -6,7 +6,7 @@
 
 // Aggiunge un nuovo utente alla lista utilizzando smart pointer
 void UserManager::addUser(const std::string& name) {
-    users.push_back(std::make_shared<User>(name));  // Usa make_shared
+    users.push_back(std::make_shared<User>(name));
 }
 
 // Restituisce tutti gli utenti come smart pointer

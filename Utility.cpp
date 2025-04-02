@@ -6,6 +6,7 @@
 #include <iostream>
 #include <limits>
 
+//stampa una riga di separazione
 void printSeparator(int length) {
     for (int i = 0; i < length; ++i) {
         std::cout << "-";
@@ -13,6 +14,7 @@ void printSeparator(int length) {
     std::cout << std::endl;
 }
 
+// Funzione per leggere un intero da input, con gestione degli errori
 int integerInput(const std::string &prompt) {
     int input;
     while (true) {
@@ -31,6 +33,7 @@ int integerInput(const std::string &prompt) {
     }
 }
 
+// Funzione per leggere una stringa da input
 std::string stringInput(const std::string &prompt) {
     std::string input;
     std::cout << prompt;

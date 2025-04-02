@@ -9,6 +9,7 @@
 
 #include "Utility.h"
 
+//Classe che si occupa di gestire la parte "grafica" dell'applicazione
 std::shared_ptr<User> UserInterface::userSelection() const {
     std::shared_ptr<User> selectedUser = nullptr;
 
@@ -27,11 +28,10 @@ std::shared_ptr<User> UserInterface::userSelection() const {
             if (users.empty()) {
                 std::cout << "Nessun utente trovato. Devi prima creare un utente.\n";
                 printSeparator();
-                continue; // Torna all'inizio del ciclo
+                continue;
             }
 
-            int userChoice = -1; // Inizializza con un valore non valido
-
+            int userChoice = -1;
             while (userChoice < 1 || userChoice > users.size()) {
                 // Continua a chiedere finché non si sceglie un utente valido
                 std::cout << "Seleziona un utente esistente:\n";
@@ -43,7 +43,6 @@ std::shared_ptr<User> UserInterface::userSelection() const {
                 userChoice = integerInput();
 
                 if (userChoice == users.size() + 1) {
-                    // Torna al menu principale
                     printSeparator();
                     break; // Esce dal ciclo interno e torna al menu principale
                 }
@@ -56,25 +55,26 @@ std::shared_ptr<User> UserInterface::userSelection() const {
                 }
             }
         } else if (choice == 2) {
+            //Crea un nuovo utente
             std::cout << "Inserisci il nome del nuovo utente: ";
             std::string newName = stringInput();
-            userManager->addUser(newName); // Usa il puntatore unico
+            userManager->addUser(newName);
             std::cout << "Utente " << newName << " creato con successo!\n";
             printSeparator();
-            // Non uscire dal ciclo, permette di scegliere di nuovo
         } else if (choice == 3) {
+            //Uscita dal programma
             std::cout << "Uscita dal programma...\n";
             return nullptr;
         } else {
+            //Fa riprovare finché la scelta non è valida
             std::cout << "Opzione non valida. Riprova.\n";
             printSeparator();
         }
     }
-
-    return selectedUser;
+    return selectedUser;    //Restituisce l'utente selezionato
 }
 
-
+// Funzione per il menu principale dell'applicazione, relativo all'utente selezionato sopra
 bool UserInterface::mainMenu(std::shared_ptr<User> user) {
     while (true) {
         std::cout << "Benvenuto " << user->getName() << "!\n";
@@ -84,8 +84,7 @@ bool UserInterface::mainMenu(std::shared_ptr<User> user) {
         std::cout << "3. Cambia utente\n";
         std::cout << "4. Esci dal programma\n";
 
-        int choice = integerInput(); // Funzione che ottiene un input intero dall'utente
-
+        int choice = integerInput();
         printSeparator();
 
         switch (choice) {
@@ -110,6 +109,7 @@ bool UserInterface::mainMenu(std::shared_ptr<User> user) {
                 return false;
             }
             default: {
+                // Fa riprovare finché la scelta non è valida
                 std::cout << "Opzione non valida. Riprova.\n";
                 break;
             }
@@ -120,13 +120,11 @@ bool UserInterface::mainMenu(std::shared_ptr<User> user) {
 
 // Funzione per visualizzare le liste della spesa dell'utente
 void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
-    // Ottieni le liste associate all'utente
     auto lists = user->getShoppingLists();
 
     // Sincronizza le liste rimuovendo quelle non più valide
     lists.erase(std::remove_if(lists.begin(), lists.end(),
         [&user](const std::shared_ptr<ShoppingList>& list) {
-            // Rimuovi le liste a cui l'utente non è più iscritto
             return !list || std::find(list->getObservers().begin(), list->getObservers().end(), user) == list->getObservers().end();
         }),
         lists.end());
@@ -138,6 +136,7 @@ void UserInterface::displayShoppingLists(std::shared_ptr<User> user) {
     }
 
     while (true) {
+        //Menù di selezione della lista su cui l'utente vuole lavorare
         std::cout << "Ecco le tue liste della spesa, scegli quale vuoi aprire: \n";
         for (size_t i = 0; i < lists.size(); ++i) {
             std::cout << i + 1 << ". " << lists[i]->getName() << ":\t" << lists[i]->getItemCount() << " oggetti\n";
@@ -174,7 +173,7 @@ void UserInterface::createShoppingList(std::shared_ptr<User> user) {
 
 // Funzione per visualizzare una lista della spesa
 void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_ptr<User> user) {
-    bool keepOpen = true;
+    bool keepOpen = true;   // Variabile per tenere aperto il menu della lista
     while (keepOpen) {
         int i = 1;
         std::cout << "Lista della spesa: " << list->getName() << "\n";
@@ -194,6 +193,7 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
         int choice = integerInput();
         switch (choice) {
             case 1: {
+                // Logica per aggiungere un nuovo elemento alla lista o aumentarne la quantità se già esistente
                 std::cout << "Inserisci il nome dell'oggetto:";
                 std::string name = stringInput();
                 bool itemFound = false;
@@ -231,20 +231,13 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                     std::cout << "7. Extra\n";
                     int catChoice = integerInput();
                     switch (catChoice) {
-                        case 1: category = ItemCategory::Alimentari;
-                            break;
-                        case 2: category = ItemCategory::Abbigliamento;
-                            break;
-                        case 3: category = ItemCategory::Elettronica;
-                            break;
-                        case 4: category = ItemCategory::Casa;
-                            break;
-                        case 5: category = ItemCategory::Salute;
-                            break;
-                        case 6: category = ItemCategory::AnimaliDomestici;
-                            break;
-                        case 7: category = ItemCategory::Extra;
-                            break;
+                        case 1: category = ItemCategory::Alimentari; break;
+                        case 2: category = ItemCategory::Abbigliamento; break;
+                        case 3: category = ItemCategory::Elettronica; break;
+                        case 4: category = ItemCategory::Casa; break;
+                        case 5: category = ItemCategory::Salute; break;
+                        case 6: category = ItemCategory::AnimaliDomestici; break;
+                        case 7: category = ItemCategory::Extra; break;
                         default: category = ItemCategory::None;
                     }
                     list->addItem(std::make_shared<Item>(name, amount, category));
@@ -254,6 +247,7 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                 break;
             }
             case 2: {
+                // Logica per segnare un elemento come comprato o da comprare
                 if (list->getItemQuantities() < 1)
                     std::cout << "Non ci sono elementi da comprare\n";
                 else {
@@ -275,6 +269,7 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                 break;
             }
             case 3: {
+                // Logica per rimuovere un elemento dalla lista (se presente)
                 if (list->getItemQuantities() < 1)
                     std::cout << "Non ci sono elementi da rimuovere\n";
                 else {
@@ -291,6 +286,7 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                 break;
             }
             case 4: {
+                //Logica per condividere la lista con un altro utente, a patto di conoscerne il nome
                 std::cout << "Inserisci il nome dell'utente: ";
                 std::string username = stringInput();
                 auto shareToUser = userManager->findUser(username);
@@ -315,11 +311,13 @@ void UserInterface::openList(std::shared_ptr<ShoppingList> &list, std::shared_pt
                 break;
             }
             case 5: {
+                // Logica per disiscriversi dalla lista o eliminarla se l'utente fosse l'unico observer rimasto
                 unsubscribeFromList(user, list);
                 keepOpen = false;
                 break;
             }
             case 6: {
+                // Uscita dalla lista senza modifiche
                 std::cout << "Uscita dalla lista...\n";
                 keepOpen = false;
                 break;
@@ -338,10 +336,10 @@ void UserInterface::unsubscribeFromList(std::shared_ptr<User> user, std::shared_
 
     int choice = integerInput();
     if (choice == 1) {
-        // Rimuovi l'utente dalla lista
+        // Rimozione dell'utente dalla lista
         user->removeShoppingList(list);
 
-        // Verifica se la lista ha ancora degli osservatori
+        // Verifica se la lista ha ancora degli osservatori e comunica all'utente le conseguenze
         if (list->isDeletable()) {
             std::cout << "Sei stato l'ultimo utente. La lista verrà eliminata automaticamente.\n";
         } else {

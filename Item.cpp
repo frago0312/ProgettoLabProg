@@ -16,21 +16,16 @@ Item::Item(std::string n, int a, ItemCategory c) {
     bought=false;
 }
 
-
-
 int Item::getAmount() const {
     return amount;
 }
 
 void Item::increaseAmount(int a) {
-    if(a<1) {
-        amount+=a;
-        if (amount<=0) {
-            amount=0;
-            bought=true;
-        }
-    } else {
-        amount+=a;
+    // in caso di "aumenti" negativi, la quantità viene sottratta e, se diventa negativa, viene settata a 0 e l'oggetto viene segnato come comprato
+    amount += a;
+    if (amount <= 0) {
+        amount = 0;
+        bought = true;
     }
 }
 

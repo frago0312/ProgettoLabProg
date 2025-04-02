@@ -48,6 +48,7 @@ std::vector<std::shared_ptr<Item>> ShoppingList::getItems() const {
     return items;
 }
 
+// Restituisce la somma totale di tutti gli oggetti nella lista, considerandone le quantità
 int ShoppingList::getItemQuantities() const {
     int count = 0;
     for (auto it: items)
@@ -55,6 +56,7 @@ int ShoppingList::getItemQuantities() const {
     return count;
 }
 
+// Restituisce il numero di oggetti distinti nella lista, senza considerare le quantità
 int ShoppingList::getItemCount() const {
     return items.size();
 }
