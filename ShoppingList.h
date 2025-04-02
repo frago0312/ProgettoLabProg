@@ -46,6 +46,11 @@ public:
 
     void setName(const std::string &name);
 
+    ~ShoppingList() override {
+        observers.clear();
+        items.clear();
+    };
+
     size_t getObserverCount() const {
         return observers.size();
     }

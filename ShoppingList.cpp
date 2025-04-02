@@ -78,5 +78,3 @@ bool ShoppingList::isDeletable() const {
 void ShoppingList::setName(const std::string &name) {
     this->name = name;
 }
-
-
