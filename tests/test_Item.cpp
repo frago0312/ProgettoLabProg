@@ -19,6 +19,7 @@ TEST_F(ItemTest, ConstructorWorks) {
     EXPECT_EQ(item->getName(), "Mela");
     EXPECT_EQ(item->getAmount(), 3);
     EXPECT_FALSE(item->isBought());
+    EXPECT_TRUE(item->isCountable());
 }
 
 // Controlla che increaseAmount() aumenti correttamente la quantità
@@ -61,4 +62,24 @@ TEST_F(ItemTest, NoChangeWithZero) {
     item->increaseAmount(0);
     EXPECT_EQ(item->getAmount(), 3);
     EXPECT_FALSE(item->isBought());
+}
+
+// Test per verificare che il costruttore lanci un'eccezione se la quantità è negativa
+TEST(ItemExceptionTest, NegativeAmountThrowsException) {
+    EXPECT_THROW({
+        Item negativeItem("Mela", -3, ItemCategory::Alimentari);
+    }, std::invalid_argument);
+}
+
+// Test per verificare che il costruttore gestisca correttamente il caso uncountable
+TEST(ItemUncountableTest, UncountableItemWorks) {
+    Item uncountableItem("Sale", 0, ItemCategory::Alimentari);
+    EXPECT_EQ(uncountableItem.getAmount(), 0);
+    EXPECT_FALSE(uncountableItem.isCountable());
+    EXPECT_FALSE(uncountableItem.isBought());
+
+    // Verifico che increaseAmount non abbia effetto su oggetti uncountable
+    uncountableItem.increaseAmount(5);
+    EXPECT_EQ(uncountableItem.getAmount(), 0);
+    EXPECT_FALSE(uncountableItem.isBought());
 }
