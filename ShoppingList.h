@@ -24,6 +24,8 @@ public:
 
     void removeItem(int index);
 
+    void removeItemByName(const std::string& name);
+
     void attach(std::shared_ptr<Observer> observer) override;
 
     void detach(std::shared_ptr<Observer> observer) override;
@@ -32,11 +34,11 @@ public:
 
     std::vector<std::shared_ptr<Item>> getItems() const;
 
-    int getItemQuantities() const;
-
     int getItemCount() const;
 
     std::shared_ptr<Item> getItemAt(int index) const;
+
+    std::shared_ptr<Item> findItemByName(const std::string& name) const;
 
     const std::string &getName() const;
 

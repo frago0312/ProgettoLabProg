@@ -19,13 +19,46 @@ ShoppingList::ShoppingList(const std::string& listName) : name(listName) {
 }
 
 void ShoppingList::addItem(std::shared_ptr<Item> item) {
+    // Cerco se esiste già un item con lo stesso nome
+    for (auto& existingItem : items) {
+        if (existingItem->getName() == item->getName()) {
+            // Se l'item esiste già, aumento la quantità invece di aggiungere un duplicato
+            existingItem->increaseAmount(item->getAmount());
+            return;
+        }
+    }
+    // Se non esiste, aggiungo il nuovo item
     items.push_back(item);
 }
 
 void ShoppingList::removeItem(int index) {
-    if (index < items.size()) {
-            items.erase(items.begin() + index);
+    if (index >= 0 && index < items.size()) {
+        items.erase(items.begin() + index);
+    } else {
+        throw std::out_of_range("Indice non valido: l'oggetto da rimuovere non esiste");
+    }
+}
+
+void ShoppingList::removeItemByName(const std::string& itemName) {
+    auto it = std::find_if(items.begin(), items.end(),
+                          [&itemName](const std::shared_ptr<Item>& item) {
+                              return item->getName() == itemName;
+                          });
+
+    if (it != items.end()) {
+        items.erase(it);
+    } else {
+        throw std::out_of_range("L'oggetto '" + itemName + "' non esiste nella lista");
+    }
+}
+
+std::shared_ptr<Item> ShoppingList::findItemByName(const std::string& name) const {
+    for (const auto& item : items) {
+        if (item->getName() == name) {
+            return item;
         }
+    }
+    return nullptr;  // Ritorna nullptr se l'item non esiste
 }
 
 void ShoppingList::attach(std::shared_ptr<Observer> observer) {
@@ -46,14 +79,6 @@ void ShoppingList::notifyObservers(const std::string& message) {
 
 std::vector<std::shared_ptr<Item>> ShoppingList::getItems() const {
     return items;
-}
-
-// Restituisce la somma totale di tutti gli oggetti nella lista, considerandone le quantità
-int ShoppingList::getItemQuantities() const {
-    int count = 0;
-    for (auto it: items)
-        count+=it->getAmount();
-    return count;
 }
 
 // Restituisce il numero di oggetti distinti nella lista, senza considerare le quantità
