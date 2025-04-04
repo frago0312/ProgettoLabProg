@@ -17,12 +17,14 @@ public:
     std::string getName() const;
     bool isBought() const;
     void changeBought();
+    bool isCountable() const;
 
 private:
     std::string name;
     int amount;
     bool bought;
     ItemCategory category;
+    bool countable;
 };
 
 

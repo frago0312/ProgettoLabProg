@@ -10,10 +10,23 @@
 #include "utility.h"
 
 Item::Item(std::string n, int a, ItemCategory c) {
-    name=n;
-    amount=a;
-    category=c;
-    bought=false;
+    name = n;
+
+    // Controllo per quantità negativa, lancia eccezione
+    if (a < 0) {
+        throw std::invalid_argument("La quantità non può essere negativa");
+    }
+
+    // Se la quantità è 0, l'oggetto è uncountable
+    countable = (a > 0);
+    amount = a;
+    category = c;
+    bought = false;
+}
+
+// Nuovo metodo per verificare se l'oggetto è countable
+bool Item::isCountable() const {
+    return countable;
 }
 
 int Item::getAmount() const {
@@ -21,7 +34,11 @@ int Item::getAmount() const {
 }
 
 void Item::increaseAmount(int a) {
-    // in caso di "aumenti" negativi, la quantità viene sottratta e, se diventa negativa, viene settata a 0 e l'oggetto viene segnato come comprato
+    // Se l'oggetto è uncountable, non modificare la quantità
+    if (!countable) {
+        return;
+    }
+
     amount += a;
     if (amount <= 0) {
         amount = 0;
