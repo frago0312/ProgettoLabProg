@@ -44,6 +44,7 @@ void Item::increaseAmount(int a) {
         amount = 0;
         bought = true;
     }
+    else bought = false;
 }
 
 std::string Item::getName() const {
